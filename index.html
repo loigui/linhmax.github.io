@@ -1,2 +1,40 @@
-<h1>Xin chào!</h1>
-<p>Đây là website đầu tiên của tôi.</p>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Verification</title>
+</head>
+<body style="font-family: sans-serif; text-align:center; margin-top:60px">
+  <h1>Xác minh người dùng</h1>
+  <button id="verifyBtn" style="padding: 10px 20px; font-size: 20px;">
+    VERIFY
+  </button>
+
+  <p id="status"></p>
+
+  <script>
+    document.getElementById("verifyBtn").onclick = async () => {
+
+      // NHẬP USER ID VÀO ĐÂY (hoặc bạn có thể auto lấy từ URL)
+      let user = prompt("Nhập ID Discord của bạn:");
+      if (!user) return;
+
+      let api = "https://YOUR_TUNNEL.trycloudflare.com/claim?user=" + user;
+
+      document.getElementById("status").innerText = "Đang xác minh...";
+
+      let res = await fetch(api);
+      let txt = await res.text();
+
+      if (txt === "success") {
+        window.location.href = "https://YOUR_TUNNEL.trycloudflare.com/done";
+      }
+      else if (txt === "limit") {
+        document.getElementById("status").innerText = "Bạn đã dùng hết 3 lần nhận tiền!";
+      }
+      else {
+        document.getElementById("status").innerText = "Lỗi: " + txt;
+      }
+    }
+  </script>
+</body>
+</html>
